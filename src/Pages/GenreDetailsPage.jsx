@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import GenreServices from "../Services/GenreServices";
 import { useEffect, useState } from "react";
 import {Pagination, Container} from "react-bootstrap";
@@ -6,7 +6,8 @@ import MovieCard from "../Components/MovieCard";
 
 const GenreDetailsPage = () => {
     const { id } = useParams();
-    const { name } = useParams();
+    const location = useLocation();
+    const name = location.state.genre.name;
     const [movies, setMovies] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPage] = useState(500);
@@ -14,8 +15,10 @@ const GenreDetailsPage = () => {
     const GenreDetailsPage = async () => {
         try {
             const response = await GenreServices.getMoviesByGenreID(id,currentPage);
-            console.log(response.data.results);
             setMovies(response.data.results);
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
         } catch (error) {
             console.log(error);
         }

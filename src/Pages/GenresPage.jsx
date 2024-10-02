@@ -8,15 +8,13 @@ const GenresPage = () => {
 
     const navigate = useNavigate();
 
-    const navigateTo = (id,genre) => {
-      navigate('/genre/'+id+'/'+genre);
+    const navigateTo = (genre) => {
+      navigate('/genre/'+genre.id, {state:{ 'genre':genre}});
     }
 
     const fetchGenres = async () => {
         try {
           const response = await GenreServices.getAllGenres();
-          console.log(response.data);
-
           setGenres(response.data.genres);
         } catch (error) {
           console.log(error);
@@ -32,7 +30,7 @@ const GenresPage = () => {
         <div className="justify-content-center flex-wrap gap-4">
         {genres.map((genre) => {
             return <Button variant="primary" className="m-1" key={genre.id}
-                onClick={() => {navigateTo(genre.id,genre.name)}}>{genre.name}</Button>
+                onClick={() => {navigateTo(genre)}}>{genre.name}</Button>
         })}
         </div>        
     </Container>;

@@ -1,35 +1,35 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Pagination } from "react-bootstrap";
-import MovieServices from "../Services/MovieServices";
-import MovieCard from "../Components/MovieCard";
+import PeopleServices from "../Services/PeopleServices";
+import PersonCard from "../Components/PersonCard";
 
-const HomePage = () => {
-    const [movies, setMovies] = useState([]);
+const PeoplePage = () => {
+    const [people, setPeople] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPage] = useState(500);
 
-    const fetchMovies = async() => {
+    const fetchPeople = async () => {
         try {
-            const response = await MovieServices.getAllMovies(currentPage);
-            setMovies(response.data.results);
-            setTimeout(() => {
-                window.scrollTo(0, 0, "instant");
-            }, 100);
+          const response = await PeopleServices.getPopularPeople(currentPage);
+          setPeople(response.data.results);
+          setTimeout(() => {
+            window.scrollTo(0, 0, "instant");
+          }, 100);
         } catch (error) {
-            console.log(error);
-        }
+          console.log(error);
+       }
     };
     useEffect(() => {
-            fetchMovies();
+            fetchPeople();
     }, [currentPage]);
 
-    console.log(movies);
+    console.log(people);
     return <Container className="d-flex flex-column mt-5 align-items-center">
-        <h1 className="mt-5">Movie DB</h1>
+        <h1 className="mt-5">Acteurs</h1>
         <div className="row justify-content-center flex-wrap gap-2"> 
-        {movies.map((movie) => {
-            console.log(movie);
-            return <MovieCard movieCard={movie} key={movie.id}></MovieCard>
+        {people.map((person) => {
+            console.log(person);
+            return <PersonCard personCard={person} key={person.name}></PersonCard>
         })}
         </div>
         <Pagination className="mt-3">
@@ -58,8 +58,8 @@ const HomePage = () => {
                 <Pagination.Last onClick={() => setCurrentPage(maxPage)}/>            
             </>}
 
-        </Pagination>
+        </Pagination>        
     </Container>;
 }
- 
-export default HomePage;
+
+export default PeoplePage;
