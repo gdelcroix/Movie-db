@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {Card , Button} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
