@@ -8,10 +8,13 @@ div.card {
   padding: 1rem;
 }
 body {
-  background-color: green;
- 
+  background-color: rgb(237, 240, 237);
 }
 
 .card {
   padding: 2em;
+}
+text-start {
+  text-align: start;
+  background-color: whitesmoke;
 }
