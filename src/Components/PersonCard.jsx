@@ -7,7 +7,6 @@ const PersonCard = ({personCard}) => {
     const navigateTo = (id) => {
       navigate('/people/'+id, {state:{ 'person':personCard}});
     }
-console.log(personCard);
     return <>
       <Card className='col-sm-5 col-md-4 col-lg-3 col-xxl-2'>
         <Card.Img src={'https://image.tmdb.org/t/p/w500/'+personCard.profile_path} alt={'image de '+personCard.name}/>

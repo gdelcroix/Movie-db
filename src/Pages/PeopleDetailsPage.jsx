@@ -14,15 +14,14 @@ const MovieDetailsPage = () => {
     const { id } = useParams();
     const location = useLocation();
     const persona = location.state.person;
-    console.log(persona);
-    const [person, setPerson] = useState({});
+    const [person, setPerson] = useState();
     const [infos, setInfos] = useState({});
 
     const fetchPeopleByName = async () => {
         try {
-            const response = await PeopleServices.getPeopleByName(persona.name);
-            setInfos(response);
-            console.log('infos')
+            const response = await PeopleServices.getPeopleByName(encodeURI(persona.name));
+            setPerson(response);
+            console.log('infos :')
             console.log(response);
         } catch (error) {
             console.log(error);
@@ -31,9 +30,7 @@ const MovieDetailsPage = () => {
     const fetchPeopleByID = async () => {
         try {
             const response = await PeopleServices.getPeopleByID(id);
-            setPerson(response.data);
-            console.log('id')
-            console.log(response.data);
+            setInfos(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -44,23 +41,26 @@ const MovieDetailsPage = () => {
         fetchPeopleByID();
     }, []);
 
+    console.log('name fetch');
+    console.log(person);
+
     return <>
-        <h1 className="mt-5">{person.name}</h1>
+        <h1 className="mt-5">{persona.name}</h1>
             <Container className="row">
                 <div className="col-4 mt-3">
-                    <img src={'https://image.tmdb.org/t/p/w500/'+person.profile_path} className="img-fluid w-90" alt={'image de '+person.name}/>
+                    <img src={'https://image.tmdb.org/t/p/w500/'+persona.profile_path} className="img-fluid w-90" alt={'image de '+id.name}/>
                 </div>
                 <div className="col-8 mt-3">
-                    {person.known_for_department && 
+                    {persona.known_for_department && 
                         <Button>
-                        Connu dans la catégorie : {person.known_for_department}
+                        Connu dans la catégorie : {persona.known_for_department}
                         </Button>}
                     <Card.Text>
-                    {person.birthday && <div>Date de naissance : {person.birthday}</div>}
-                    {person.place_of_birth && <div> Lieu de naissance : {person.place_of_birth}</div>}
-                    {person.deathday && <div> Date de deces : {person.deathday}</div>}
+                    {id.birthday && <div>Date de naissance : {id.birthday}</div>}
+                    {id.place_of_birth && <div> Lieu de naissance : {id.place_of_birth}</div>}
+                    {id.deathday && <div> Date de deces : {id.deathday}</div>}
                     </Card.Text>
-                    {person.biography && <div className="mt-1 text-start">Biographie : {person.biography}</div>}
+                    {id.biography && <div className="mt-1 text-start">Biographie : {id.biography}</div>}
                     
                 </div>
             </Container>

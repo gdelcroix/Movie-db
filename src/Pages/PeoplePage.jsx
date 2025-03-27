@@ -23,12 +23,10 @@ const PeoplePage = () => {
             fetchPeople();
     }, [currentPage]);
 
-    console.log(people);
     return <Container className="d-flex flex-column mt-5 align-items-center">
         <h1 className="mt-5">Acteurs</h1>
         <div className="row justify-content-center flex-wrap gap-2"> 
         {people.map((person) => {
-            console.log(person);
             return <PersonCard personCard={person} key={person.name}></PersonCard>
         })}
         </div>

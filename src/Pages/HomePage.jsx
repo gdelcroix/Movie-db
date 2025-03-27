@@ -28,7 +28,6 @@ const HomePage = () => {
         <h1 className="mt-5">Movie DB</h1>
         <div className="row justify-content-center flex-wrap gap-2"> 
         {movies.map((movie) => {
-            console.log(movie);
             return <MovieCard movieCard={movie} key={movie.id}></MovieCard>
         })}
         </div>
