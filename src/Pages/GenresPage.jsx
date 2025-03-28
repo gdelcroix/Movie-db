@@ -1,17 +1,33 @@
-import { useState, useEffect } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { getAllGenres } from '../Services/GenreServices';
-import { useNavigate } from 'react-router-dom';
+import GenreCard from '../Components/GenreCard';
 
+/**
+ * GenresPage component fetches and displays a list of movie genres.
+ *
+ * This component uses React hooks such as `useState`, `useEffect`, and `useMemo` to manage
+ * and optimize the rendering of genres. It fetches the genres from an API using the `getAllGenres` function
+ * and displays them in a responsive layout using Bootstrap components.
+ *
+ * @returns {JSX.Element} The rendered GenresPage component.
+ *
+ * @example
+ *   return <GenresPage />;
+ */
 const GenresPage = () => {
+  /**
+   * Stores the list of genres fetched from the API.
+   * @type {Array}
+   */
   const [genres, setGenres] = useState([]);
 
-  const navigate = useNavigate();
-
-  const navigateTo = (genre) => {
-    navigate('/genre/' + genre.id, { state: { genre: genre } });
-  };
-
+  /**
+   * Fetches the list of genres from the API when the component mounts.
+   * @function
+   * @name fetchGenres
+   * @returns {Promise<void>} A promise that resolves when the data is fetched and state is updated.
+   */
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -22,27 +38,37 @@ const GenresPage = () => {
       }
     };
     fetchGenres();
-  }, [genres]);
-
+  }, []);
+  /**
+   * Memoizes the genres array to optimize rendering.
+   * @type {Array}
+   * @default genres
+   * @example genres
+   *
+   */
+  const memoizedGenres = useMemo(() => genres, [genres]);
+  /**
+   * Renders the GenresPage component.
+   *
+   * @returns {JSX.Element}
+   */
   return (
     <Container className='d-flex flex-column align-items-center'>
-      <h1 className='mt-5 fixed-top'>Genres</h1>
-      <div className='justify-content-center flex-wrap gap-4'>
-        {genres.map((genre) => {
-          return (
-            <Button
-              variant='primary'
-              className='m-1'
-              key={genre.id}
-              onClick={() => {
-                navigateTo(genre);
-              }}
-            >
-              {genre.name}
-            </Button>
-          );
-        })}
-      </div>
+      <Row className='mt-5'>
+        <Col className='col-3'>
+          <h2>Genres</h2>
+        </Col>
+      </Row>
+      <Row className='mt-5 justify-content-center flex-wrap gap-4'>
+        {memoizedGenres &&
+          memoizedGenres.map((genre) => {
+            return (
+              <GenreCard genre={genre} key={genre.id}>
+                {genre.name}
+              </GenreCard>
+            );
+          })}
+      </Row>
     </Container>
   );
 };

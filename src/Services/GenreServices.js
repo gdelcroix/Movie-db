@@ -1,21 +1,34 @@
 import axios from 'axios';
 
+const BEARER = import.meta.env.VITE_BEARER;
+
+/**
+ * Fetches all movie genres from the Movie Database API.
+ *
+ * @returns {Promise<Object>} A promise that resolves to the response object containing the list of genres.
+ * @throws {Error} Throws an error if the request fails.
+ */
 function getAllGenres() {
   return axios.get('https://api.themoviedb.org/3/genre/movie/list?language=fr', {
     headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MzVkNWQ3OWIzOTQ5ZWVlMzY5NmIyNzY3ZjI5ZjIwNiIsIm5iZiI6MTcyNzY5NzQyMS4zMjIwMzUsInN1YiI6IjY2ZmE5MTQwM2EwZjVhMDhjOGYxOGE2MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VFVGfpubYIuVO8GOwKCEVq7nDUV29W-b1ZZulj_hTYE',
+      Authorization: `Bearer ${BEARER}`,
     },
   });
 }
 
+/**
+ * Fetches movies by a specific genre ID and page number.
+ *
+ * @param {number|string} id - The ID of the genre to filter movies by.
+ * @param {number} currentPage - The current page number for pagination.
+ * @returns {Promise} A promise that resolves to the response of the API call.
+ */
 function getMoviesByGenreID(id, currentPage) {
   return axios.get(
     'https://api.themoviedb.org/3/discover/movie?language=fr-FR&with_genres=' + id + '&page=' + currentPage,
     {
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MzVkNWQ3OWIzOTQ5ZWVlMzY5NmIyNzY3ZjI5ZjIwNiIsIm5iZiI6MTcyNzY5NzQyMS4zMjIwMzUsInN1YiI6IjY2ZmE5MTQwM2EwZjVhMDhjOGYxOGE2MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VFVGfpubYIuVO8GOwKCEVq7nDUV29W-b1ZZulj_hTYE',
+        Authorization: `Bearer ${BEARER}`,
       },
     }
   );

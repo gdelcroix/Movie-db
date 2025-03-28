@@ -1,16 +1,55 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Pagination } from 'react-bootstrap';
 import { getPopularPeople } from '../Services/PeopleServices';
 import PersonCard from '../Components/PersonCard';
 
+/**
+ * PeoplePage Component
+ *
+ * This component displays a paginated list of popular people fetched from an API.
+ * It includes a header, a grid of person cards, and pagination controls for navigation.
+ */
 const PeoplePage = () => {
+  /**
+   * Stores the list of popular people fetched from the API.
+   * @type {Array}
+   * @default []
+   */
   const [people, setPeople] = useState([]);
+  /**
+   * Tracks the current page number for pagination.
+   * @type {number}
+   * @default 1
+   */
   const [currentPage, setCurrentPage] = useState(1);
+  /**
+   * Represents the maximum number of pages available.
+   * @type {number}
+   * @default 500
+   */
   const [maxPage] = useState(500);
 
   useEffect(() => {
+    /**
+     * Fetches a list of popular people from the API and updates the state with the results.
+     * Scrolls the window to the top after a short delay.
+     * Logs an error to the console if the API request fails.
+     *
+     * @async
+     * @function fetchPeople
+     * @returns {Promise<void>} A promise that resolves when the data is fetched and state is updated.
+     */
     const fetchPeople = async () => {
       try {
+        /**
+         * Fetches a list of popular people from the API based on the current page number.
+         * @type {Array}
+         * @default []
+         * @see {@link module:Services/PeopleServices.getPopularPeople}
+         * @returns {Array} An array of popular people objects.
+         * @throws {Error} An error message if the request fails.
+         * @see {@link module:Components/PersonCard}
+         */
         const response = await getPopularPeople(currentPage);
         setPeople(response.data.results);
         setTimeout(() => {
@@ -22,13 +61,18 @@ const PeoplePage = () => {
     };
     fetchPeople();
   }, [currentPage]);
-
+  /**
+   * PeoplePage Component loads a paginated list of popular people fetched from an API.
+   * It includes a header, a grid of person cards, and pagination controls for navigation.
+   * @returns {ReactElement} The PeoplePage component
+   * @see {@link module:Components/PersonCard}
+   */
   return (
     <Container className='d-flex flex-column mt-5 align-items-center'>
       <h1 className='mt-5'>Acteurs</h1>
       <div className='row justify-content-center flex-wrap gap-2'>
         {people.map((person) => {
-          return <PersonCard personCard={person} key={person.name}></PersonCard>;
+          return <PersonCard person={person} key={person.name}></PersonCard>;
         })}
       </div>
       <Pagination className='mt-3'>

@@ -1,17 +1,54 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { getMoviesByGenreID } from '../Services/GenreServices';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pagination, Container } from 'react-bootstrap';
 import MovieCard from '../Components/MovieCard';
 
+/**
+ * GenreDetailsPage Component
+ *
+ * This component displays a list of movies for a specific genre, along with pagination controls.
+ * It fetches movies based on the genre ID from the URL parameters and the current page state.
+ *
+ */
+
 const GenreDetailsPage = () => {
+  /**
+   * Extracts the genre ID from the URL parameters.
+   * @type {number}
+   */
   const { id } = useParams();
+  /**
+   * Extracts the genre name from the location state.
+   * starting from useLocation() hook.
+   * @type {JSON}
+   */
   const location = useLocation();
   const name = location.state.genre.name;
+  /**
+   * Fetches movies based on the genre ID and current page number.
+   * @type {Array}
+   */
   const [movies, setMovies] = useState([]);
+  /**
+   * Tracks the current page number for pagination.
+   * @type {number}
+   * @default 1
+   * @example 1
+   */
   const [currentPage, setCurrentPage] = useState(1);
+  /**
+   * Represents the maximum number of pages available.
+   * @type {number}
+   */
   const [maxPage] = useState(500);
 
+  /**
+   * Fetches a list of movies based on the genre ID and current page number.
+   * @function
+   * @name fetchGenreDetailsPage
+   * @returns {Promise<void>} A promise that resolves when the data is fetched and state is updated.
+   */
   useEffect(() => {
     const fetchGenreDetailsPage = async () => {
       try {
@@ -26,7 +63,10 @@ const GenreDetailsPage = () => {
     };
     fetchGenreDetailsPage();
   }, [currentPage, id]);
-
+  /**
+   * Renders the GenreDetailsPage component.
+   * @returns {JSX.Element}
+   */
   return (
     <Container className='d-flex flex-column align-items-center bg-success'>
       <h1 className='mt-4'>{name}</h1>
